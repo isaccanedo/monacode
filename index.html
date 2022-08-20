@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monacode</title>
+    <script type="module">
+
+      const search = new URLSearchParams(document.location.search.substring(1))
+      const overrides = Object.fromEntries(search);
+      const defaults = {
+          container: document.getElementById('editor'),
+          value: `
+const values = { a: "1324568675432456", b: 8796574356789976543678, c: [2345678754435678754635], d: true }
+
+const add = (x, y) => x + y;
+
+let x = 1;
+let y = 2;
+
+const result = add(x, y)
+`.trim(),
+      }
+
+      import(window.location.hostname === "localhost"
+        ? "./index.js"
+        : "./index.min.js"
+      ).then(module => {
+        // Create a new editor and attatch to the document body
+        const editor = module.default({ ...defaults, ...overrides });
+
+        // Listen for changes within the editor
+        editor.getModel().onDidChangeContent(change => {
+          const newValue = editor.getValue();
+          console.log(newValue);
+        });
+
+      })
+
+
+    </script>
+    <style>
+      body {
+        background: #1e1e1e;
+        margin: 0;
+      }
+      #top {
+        display: flex;
+        margin: 0;
+      }
+      #top h2 {
+        margin: 0;
+        color: white;
+        margin-right: 16px;
+      }
+      #editor {
+        margin: 0;
+        position: absolute;
+        width: 100vw;
+        top: 5vmin;
+        right: 5vmin;
+        bottom: 5vmin;
+        left: 0;
+        display: grid;
+        grid-gap: 5vmin;
+        grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+        grid-template-rows: repeat(auto-fit, minmax(20%, 1fr));
+      }
+    </style>
+  </head>
+  <body>
+    <div id="top">
+      <h2>🌈 Prettier Editor</h2>
+      <button id="js-button">Javascript</button>
+      <button id="ts-button">Typescript</button>
+      <button id="json-button">JSON</button>
+    </div>
+    <div id="editor"></div>
+    <script>
+      const jsButton = document.getElementById('js-button')
+      const tsButton = document.getElementById('ts-button')
+      const jsonButton = document.getElementById('json-button')
+
+      jsButton.addEventListener('click', () => {
+        window.location.href =  window.location.origin + '?language=javascript'
+      })
+      tsButton.addEventListener('click', () => {
+        window.location.href =  window.location.origin + '?language=typescript'
+      })
+      jsonButton.addEventListener('click', () => {
+        window.location.href =  window.location.origin + '?language=json'
+      })
+    </script>
+  </body>
+</html>
