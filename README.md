@@ -2,7 +2,7 @@
 
 Copy of https://monacode.live
 
-> A thin es-module wrapper around the monaco editor and prettier
+> Um invólucro fino do módulo es em torno do editor monaco e mais bonito
 
 Exploring the feasibility of importing the [monaco-editor](https://github.com/Microsoft/monaco-editor) (which powers VS Code) and [prettier](https://github.com/prettier/prettier) modules directly into the browser; aiming to make it _one line easy_ to bring a native like code editing experiences to web applications without a build step.
 
